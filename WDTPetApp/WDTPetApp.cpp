@@ -39,6 +39,21 @@ int _tmain(int argc, _TCHAR* argv[])
 			throw errCode;
 		}
 
+		if (errCode = EnableTimer(5, timeunit))
+		{
+			std::cout << "Failed to start WDT with the following timeout and min_sec args " << timeout << " " << timeunit << "\n";
+			throw errCode;
+		}
+		else
+		{
+			std::cout << "Set timer to " << timeout << " seconds\n";
+		}
+
+		Sleep(2000);//two second sleep
+
+		DisableTimer();
+
+
 		//enable WDT in seconds mode with a timeout of 30, and check success
 		if (errCode = EnableTimer(timeout, timeunit)) 
 			{ 
@@ -70,6 +85,12 @@ int _tmain(int argc, _TCHAR* argv[])
 			_kbhit();
 			if (_getch() == 'q')
 			{
+				if (errCode = DisableTimer())
+				{
+					std::cout << "Failed to disable timer.\n";
+					throw errCode;
+				}
+
 				if (errCode = CloseSession()) 
 				{
 					std::cout<<"Failed to close Driver.\n";

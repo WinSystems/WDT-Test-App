@@ -67,6 +67,13 @@ int testBounds(){
 			return 1;
 		}
 	}
+	if (errCode = ReadTimerValue(NULL)) {
+		if (errCode != INVALID_PARAMETER){
+			std::cout << "Expected bad parameter for enabletimer with bad time unit. Recieved error: " << errCode << "\n";
+			CloseSession();
+			return 1;
+		}
+	}
 	CloseSession();
 
 	return 0;
@@ -97,6 +104,26 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (errCode = InitializeSession()) {
 				printf("Failed to open device\n");
 				throw errCode;
+			}
+
+			if (errCode = EnableTimer(timeout, 0)) { //starting timer in seconds
+				printf("Failed to start WDT with the following timeout and min_sec args %c %d\n", timeout, timeunit);
+				throw errCode;
+			}
+            
+			if (errCode = DisableTimer())
+			{
+				printf("Failed to disable timer\n");
+				throw errCode;
+			}
+
+			if (errCode = ReadTimerValue(&reading)) {
+				printf("Failed to read current timeout size\n");
+				throw errCode;
+			}
+			if (reading)
+			{
+				printf("Disable timer failed to function correctly");
 			}
 
 			if (errCode = EnableTimer(timeout, 0)) { //starting timer in seconds

@@ -35,6 +35,7 @@ extern "C"
 	DECLDIR int ReadTimerValue(unsigned int *readValue);
 	DECLDIR int WriteTimerValue(unsigned int writeValue);
 	DECLDIR int EnableTimer(unsigned int timeoutValue, int min_sec);
+	DECLDIR int DisableTimer();
 	DECLDIR int CloseSession();
 
 }
