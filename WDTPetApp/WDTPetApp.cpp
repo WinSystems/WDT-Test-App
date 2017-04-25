@@ -8,8 +8,9 @@
 #include <conio.h>
 #include <process.h>
 
+//reads time every second and prints timeout remaining
 void countThread(void *par){
-	unsigned int reading = 257;
+	unsigned int reading;
 	while (1){
 		if (ReadTimerValue(&reading))
 			printf("Failed to read");
@@ -23,8 +24,8 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	int errCode = 0;
 	unsigned int timeout = 30;
-	int timeunit = 0;
-	unsigned int reading = 0;
+	int timeunit = SECONDS;
+	unsigned int reading;
 
 	//Pet app --- Require key press to reset timer to 30 seconds. If key press is q then it will close the driver and quit.
 	try{
@@ -35,7 +36,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 
 		//enable WDT in seconds mode with a timeout of 30, and check success
-		if (errCode = EnableTimer(timeout, 0)) { //starting timer in seconds
+		if (errCode = EnableTimer(timeout, timeunit)) { 
 			printf("Failed to start WDT with the following timeout and min_sec args %c %d\n", timeout, timeunit);
 			throw errCode;
 		}
@@ -50,12 +51,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		//Loops writing 30 second timeout and reading timeout.
 		//Waits for keypress to write 30 second timeout
 		//q closes the driver and breaks loop
-		Sleep(2000);
-		if (errCode = ReadTimerValue(&reading)) {
-			printf("Failed to read current timeout size\n");
-			throw errCode;
-		}
-		printf("Current nonthread timeout: %u\n", reading);
 		while (1){
 			if (errCode = WriteTimerValue(timeout)){
 				printf("Failed to write time to driver\n");
