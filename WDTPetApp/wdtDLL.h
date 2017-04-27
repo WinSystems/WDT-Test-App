@@ -17,7 +17,6 @@
 //	04/14/17	  1.0		Original Release of DLL	
 //
 //****************************************************************************
-#pragma comment(lib, "wdtDLL.lib")
 
 #ifndef _WDT_DLL_H_
 #define _WDT_DLL_H_
@@ -31,25 +30,24 @@
 
 extern "C"
 {
-	DECLDIR int InitializeSession();
-	DECLDIR int ReadTimerValue(unsigned int *readValue);
-	DECLDIR int WriteTimerValue(unsigned int writeValue);
-	DECLDIR int EnableTimer(unsigned int timeoutValue, int min_sec);
-	DECLDIR int DisableTimer();
-	DECLDIR int CloseSession();
-
+    DECLDIR int InitializeSession();
+    DECLDIR int ReadTimerValue(unsigned int *readValue);
+    DECLDIR int WriteTimerValue(unsigned int writeValue);
+    DECLDIR int EnableTimer(unsigned int timeoutValue, int min_sec);
+    DECLDIR int DisableTimer();
+    DECLDIR int CloseSession();
 }
 
-enum {
-	SUCCESS = 0,
-	DRIVER_ERROR,  // ioctl error
-	INVALID_HANDLE,
-	INVALID_PARAMETER // dll parameter error
-};
+typedef enum {
+    SUCCESS = 0,
+    DRIVER_ERROR,
+    INVALID_HANDLE,
+    INVALID_PARAMETER
+} ErrorCodes;
 
-enum {
+typedef enum {
     SECONDS = 0,
     MINUTES
-};
+} Units;
 
 #endif
